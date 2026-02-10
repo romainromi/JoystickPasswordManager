@@ -70,9 +70,7 @@ export const validatePasswordData = (req, res, next) => {
 };
 
 export const validateId = (req, res, next) => {
-	console.log(req.params);
 	req.params = { ...req.params, id: Number.isInteger(Number(req.params.id)) ? Number(req.params.id) : 0 };
-	console.log(req.params);
 
 	const schema = z.object({
 		id: z.number(),
