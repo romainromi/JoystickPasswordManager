@@ -1,10 +1,7 @@
-import express from "express";
-import { passwordRoutes } from "./routes/password.routes.js";
-const app = express();
-app.use(express.json());
+import app from "./app.js";
+import "dotenv/config"
 
-app.use("/api/passwords", passwordRoutes);
+const PORT = process.env.PORT || 5000
 
-app.listen(3000, () => {
-	console.log("Serveur lancé sur http://localhost:3000");
-});
+app.listen(PORT, () => console.log(`Le serveur tourne sur http://localhost:${PORT}`))
+

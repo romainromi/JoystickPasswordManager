@@ -1,14 +1,29 @@
-import mysql from "mysql2";
-import dotenv from "dotenv";
-dotenv.config();
+import mysql from "mysql2/promise";
+import "dotenv/config";
 
-const pool = mysql.createPool({
-	host: process.env.DB_HOST,
-	port: process.env.DB_PORT,
-	user: process.env.DB_USER,
-	password: process.env.DB_PASSWORD,
-	database: process.env.DB_NAME,
-});
+let db;
 
-const promisePool = pool.promise();
-export default promisePool;
+try {
+    let env = process.env;
+
+    db = mysql.createPool({
+        host: env.DB_HOST,
+        user: env.DB_USER,
+        password: env.DB_PASS,
+        database: env.DB_NAME,
+    });
+  
+  const promisePool = pool.promise();
+
+
+    await db.getConnection();
+    console.log(`Connexion a la database ${env.DB_NAME} réussi`);
+} catch (error) {
+    console.error(
+        ("Erreur lors de la connexion a la base de données", error.message),
+    );
+    process.exit(1);
+}
+
+export { db, promisePool };
+
