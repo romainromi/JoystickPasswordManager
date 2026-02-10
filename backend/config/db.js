@@ -12,6 +12,9 @@ try {
         password: env.DB_PASS,
         database: env.DB_NAME,
     });
+  
+  const promisePool = pool.promise();
+
 
     await db.getConnection();
     console.log(`Connexion a la database ${env.DB_NAME} réussi`);
@@ -22,4 +25,5 @@ try {
     process.exit(1);
 }
 
-export { db };
+export { db, promisePool };
+
