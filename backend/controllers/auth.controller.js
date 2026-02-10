@@ -5,11 +5,14 @@ import "dotenv/config";
 import {
     createUser,
     findUserByEmail,
+    findUserByResetToken,
     findUserByVerifyToken,
     saveResetPassword,
-    verifyUser,
-} from "../models/user.model";
-import { sendResetPasswordEmail, sendVerificationMail } from "../config/mailer";
+    updatePassword,
+    verifyResetToken,
+    verifyUser
+} from "../models/user.model.js";
+import { sendResetPasswordEmail, sendVerificationMail } from "../config/mailer.js";
 
 export const register = async (req, res) => {
     try {
@@ -115,7 +118,7 @@ export const resetPassword = async (req, res) => {
         await updatePassword(user.id, passwordHash);
         await verifyResetToken(user.id)
 
-        res.status(200).json({message: "MOT DE PASSE REINITIALISER AVEC SUCCES"});
+        res.status(200).json({message: "Mot de passe réinitialiser avec succès"});
     } catch (error) {
         res.status(500).json({ message: "erreur server", error: error.message });
     }

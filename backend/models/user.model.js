@@ -36,5 +36,5 @@ export const updatePassword = async (userId, passwordHash) => {
 };
 
 export const saveResetPassword = async (userId, token) => {
-    await db.query(`UPDATE users SET reset_token = ? WHERE id = ?`, [token, userId]);
+    await db.query(`UPDATE utilisateurs SET reset_token = ? WHERE id = ?`, [token, userId]);
 };

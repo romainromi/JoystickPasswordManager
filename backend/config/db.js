@@ -4,7 +4,7 @@ import "dotenv/config";
 let db;
 
 try {
-    let env = preprocess.env;
+    let env = process.env;
 
     db = mysql.createPool({
         host: env.DB_HOST,
