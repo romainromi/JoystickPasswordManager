@@ -10,5 +10,5 @@ const pool = mysql.createPool({
 	database: process.env.DB_NAME,
 });
 
-const db = pool.promise();
-export default db;
+const promisePool = pool.promise();
+export default promisePool;
