@@ -1,27 +1,35 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home.jsx";
-import Signup from "./pages/Signup.jsx";
-import Contact from "./pages/Contact.jsx";
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 
+// Pages
+import Home from "./pages/Home.jsx";
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import EditCredential from "./pages/EditCredential.jsx";
+
 function App() {
   return (
-    <BrowserRouter>
+    <div className="flex flex-col min-h-screen">
+      {/* Header */}
       <Navbar />
-      {/* Cette div prend tout l'espace restant */}
-      <div className="flex-1 bg-white p-6">
+
+      {/* Contenu principal */}
+      <div className="flex-1 bg-pink-50 p-6">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/edit/:id" element={<EditCredential />} />
         </Routes>
       </div>
+
+      {/* Footer */}
       <Footer />
-    </BrowserRouter>
+    </div>
   );
 }
 
-
 export default App;
-

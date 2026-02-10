@@ -1,16 +1,29 @@
 // src/components/Navbar.jsx
+import { Link } from "react-router-dom";
+
 export default function Navbar() {
     return (
-        <nav className="bg-pink-200 shadow p-4 flex justify-center items-center relative">
-            {/* Nom du site centré */}
-            <h1 className="text-2xl font-bold text-pink-700">
-                Joystick Password Manager
-            </h1>
+        <nav className="bg-pink-300 p-4 flex items-center justify-between">
+
+            {/* Pour laisser le bouton à droite, on met un div vide à gauche */}
+            <div className="w-1/3"></div>
+
+            {/* Nom du site au centre */}
+            <div className="text-white text-xl font-bold text-center w-1/3">
+                <Link to="/" className="hover:underline">
+                    Joystick Password Manager
+                </Link>
+            </div>
 
             {/* Bouton Connexion à droite */}
-            <button className="absolute right-4 bg-pink-300 hover:bg-pink-400 text-white font-semibold py-2 px-4 rounded">
-                Connexion
-            </button>
+            <div className="w-1/3 flex justify-end">
+                <Link
+                    to="/login"
+                    className="bg-white text-pink-500 font-semibold py-2 px-4 rounded hover:bg-pink-100"
+                >
+                    Connexion
+                </Link>
+            </div>
         </nav>
     );
 }
