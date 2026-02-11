@@ -50,8 +50,15 @@ export const validatePasswordAccess = async (req, res, next) => {
 export const validatePasswordData = (req, res, next) => {
 	const schema = z.object({
 		url: z.url(),
-		username: z.string().min(6).max(30),
-		password: z.string().min(6),
+		username: z
+			.string()
+			.min(6)
+			.max(30)
+			.regex(/^(?!.*(?:delete|update|select))[^ &]+$/i), // reject spaces, &, delete, update, select, DELETE, UPDATE, SELECT
+		password: z
+			.string()
+			.min(6)
+			.regex(/^(?!.*(?:delete|update|select))[^ &]+$/i),
 	});
 
 	try {
