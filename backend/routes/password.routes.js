@@ -10,7 +10,7 @@ import { getAllPasswords, getPasswordByID, addPassword, updatePassword, deletePa
 
 passwordRoutes.get("/", getAllPasswords);
 passwordRoutes.post("/", validatePasswordData, addPassword);
-passwordRoutes.get("/:id", validateId, validatePasswordData, validatePasswordAccess, getPasswordByID);
+passwordRoutes.get("/:id", validateId, validatePasswordAccess, getPasswordByID);
 passwordRoutes.patch("/:id", validateId, validatePasswordData, validatePasswordAccess, updatePassword);
 passwordRoutes.delete("/:id", validateId, validatePasswordAccess, deletePassword);
 
