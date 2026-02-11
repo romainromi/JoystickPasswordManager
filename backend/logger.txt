@@ -1,5 +1,0 @@
-Date: Wednesday, February 11, 2026 11:37 AM      GET      /api/passwords/8
-Date: Wednesday, February 11, 2026 11:37 AM      GET      /api/passwords
-Date: Wednesday, February 11, 2026 11:37 AM      GET      /api/passwords/8
-Date: Wednesday, February 11, 2026 11:40 AM      GET      /api/passwords/8      ::1
-Date: Wednesday, February 11, 2026 11:40 AM      GET      /api/passwords/8      ::1
