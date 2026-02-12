@@ -18,6 +18,27 @@ function App() {
     { id: 2, site: "Facebook", login: "user@fb.com", password: "abcdef" },
   ]);
 
+  const fetchCredentials = async (token) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/passwords', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const passwords = Array.isArray(data.passwords) ? data.passwords : [];
+        setCredentials(passwords);
+      }
+    } catch (err) {
+      console.error('Error fetching credentials:', err);
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("jstoken");
     const tokenExp = localStorage.getItem("jstoken_exp");
@@ -25,6 +46,7 @@ function App() {
 
     if (token && tokenExp && Number(tokenExp) > now) {
       setIsAuthenticated(true);
+      fetchCredentials(token);
       return;
     }
 
