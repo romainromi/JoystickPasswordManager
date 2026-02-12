@@ -37,7 +37,10 @@ export default function Login({ setIsAuthenticated }) {
         setErrors({});
 
         try {
-            await Authenticate(email, password);
+            const data = await Authenticate(email, password);
+            if (data?.token) {
+                localStorage.setItem("jstoken", data.token);
+            }
             // Succès !
             setIsAuthenticated(true);
             navigate("/dashboard");

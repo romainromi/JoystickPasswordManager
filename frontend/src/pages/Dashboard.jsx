@@ -9,10 +9,16 @@ export default function Dashboard({ credentials, setCredentials }) {
     const fetchCredentials = useCallback(async () => {
         try {
             setLoading(true);
+            const token = localStorage.getItem("jstoken");
+            if (!token) {
+                setError("Token manquant");
+                return;
+            }
             const response = await fetch('http://localhost:5000/api/passwords', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
                 },
             });
 
@@ -43,10 +49,16 @@ export default function Dashboard({ credentials, setCredentials }) {
         }
 
         try {
+            const token = localStorage.getItem("jstoken");
+            if (!token) {
+                setError("Token manquant");
+                return;
+            }
             const response = await fetch(`http://localhost:5000/api/passwords/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
                 },
             });
 
