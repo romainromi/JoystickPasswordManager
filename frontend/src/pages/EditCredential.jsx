@@ -13,7 +13,7 @@ export default function EditCredential({ credentials, setCredentials }) {
     useEffect(() => {
         if (id !== "new") {
             const item = credentials.find(
-                (d) => d.id === Number.parseInt(id)
+                (d) => d.uid === Number.parseInt(id)
             );
 
             if (item) {
@@ -103,7 +103,7 @@ export default function EditCredential({ credentials, setCredentials }) {
 
             // Succès !
             const savedItem = {
-                id: data?.id ?? (id === "new" ? Date.now() : Number.parseInt(id)),
+                uid: data?.uid ?? (id === "new" ? Date.now() : Number.parseInt(id)),
                 site,
                 login,
                 password,
@@ -113,7 +113,7 @@ export default function EditCredential({ credentials, setCredentials }) {
                 setCredentials([...credentials, savedItem]);
             } else {
                 setCredentials(
-                    credentials.map((c) => (c.id === savedItem.id ? savedItem : c))
+                    credentials.map((c) => (c.uid === savedItem.uid ? savedItem : c))
                 );
             }
 
