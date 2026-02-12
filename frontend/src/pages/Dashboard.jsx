@@ -29,7 +29,8 @@ export default function Dashboard({ credentials, setCredentials }) {
                 return;
             }
 
-            setCredentials(data);
+            const passwords = Array.isArray(data.passwords) ? data.passwords : [];
+            setCredentials(passwords);
             setError("");
         } catch (err) {
             setError('Erreur serveur');
@@ -62,14 +63,14 @@ export default function Dashboard({ credentials, setCredentials }) {
                 },
             });
 
-            const data = await response.json();
+            const data = response.status === 204 ? null : await response.json();
 
             if (!response.ok) {
-                setError(data.message || 'Erreur lors de la suppression');
+                setError((data && data.message) || 'Erreur lors de la suppression');
                 return;
             }
 
-            setCredentials(credentials.filter((c) => c.id !== id));
+            setCredentials((prev) => prev.filter((c) => c.id !== id));
             setError("");
         } catch (err) {
             setError('Erreur serveur');
