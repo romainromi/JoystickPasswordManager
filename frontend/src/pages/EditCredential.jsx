@@ -57,6 +57,11 @@ export default function EditCredential({ credentials, setCredentials }) {
         setErrors({});
 
         try {
+            const token = localStorage.getItem("jstoken");
+            if (!token) {
+                setErrors({ submit: "Token manquant" });
+                return;
+            }
             let response;
 
             if (id === "new") {
@@ -65,6 +70,7 @@ export default function EditCredential({ credentials, setCredentials }) {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
                     },
                     body: JSON.stringify({
                         site,
@@ -78,6 +84,7 @@ export default function EditCredential({ credentials, setCredentials }) {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
                     },
                     body: JSON.stringify({
                         site,

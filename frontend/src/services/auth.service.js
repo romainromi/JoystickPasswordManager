@@ -1,9 +1,12 @@
 export const Authenticate = async (email, password) => {
+    const token = localStorage.getItem("jstoken");
+    const headers = {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
     const response = await fetch('http://localhost:5000/auth/login', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({
             email,
             password,
@@ -20,11 +23,14 @@ export const Authenticate = async (email, password) => {
 };
 
 export const inscrire = async (email, password, confirmPassword) => {
+    const token = localStorage.getItem("jstoken");
+    const headers = {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
     const response = await fetch('http://localhost:5000/auth/register', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify({
             email,
             password,
