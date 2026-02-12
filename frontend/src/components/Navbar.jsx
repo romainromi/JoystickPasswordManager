@@ -4,6 +4,8 @@ export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
     const navigate = useNavigate();
 
     const handleLogout = () => {
+        localStorage.removeItem("jstoken");
+        localStorage.removeItem("jstoken_exp");
         setIsAuthenticated(false);
         navigate("/");
     };

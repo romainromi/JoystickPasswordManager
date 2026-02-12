@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 
@@ -17,6 +17,21 @@ function App() {
     { id: 1, site: "Google", login: "user@gmail.com", password: "123456" },
     { id: 2, site: "Facebook", login: "user@fb.com", password: "abcdef" },
   ]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("jstoken");
+    const tokenExp = localStorage.getItem("jstoken_exp");
+    const now = Date.now();
+
+    if (token && tokenExp && Number(tokenExp) > now) {
+      setIsAuthenticated(true);
+      return;
+    }
+
+    localStorage.removeItem("jstoken");
+    localStorage.removeItem("jstoken_exp");
+    setIsAuthenticated(false);
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-white">

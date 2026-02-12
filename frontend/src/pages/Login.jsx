@@ -40,6 +40,8 @@ export default function Login({ setIsAuthenticated }) {
             const data = await Authenticate(email, password);
             if (data?.token) {
                 localStorage.setItem("jstoken", data.token);
+                const expiresAt = Date.now() + 60 * 60 * 1000;
+                localStorage.setItem("jstoken_exp", String(expiresAt));
             }
             // Succès !
             setIsAuthenticated(true);
