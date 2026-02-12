@@ -5,6 +5,19 @@ import PropTypes from "prop-types";
 export default function Dashboard({ credentials, setCredentials }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [visiblePasswords, setVisiblePasswords] = useState(new Set());
+
+    const togglePasswordVisibility = (id) => {
+        setVisiblePasswords((prev) => {
+            const newSet = new Set(prev);
+            if (newSet.has(id)) {
+                newSet.delete(id);
+            } else {
+                newSet.add(id);
+            }
+            return newSet;
+        });
+    };
 
     const fetchCredentials = useCallback(async () => {
         try {
@@ -129,9 +142,18 @@ export default function Dashboard({ credentials, setCredentials }) {
                                     {item.login}
                                 </p>
 
-                                <p className="text-gray-400 text-sm mb-6">
-                                    {item.password}
-                                </p>
+                                <div className="flex items-center justify-between mb-6">
+                                    <p className="text-gray-400 text-sm">
+                                        {visiblePasswords.has(item.id) ? item.password : '•'.repeat(Math.min(item.password.length, 10))}
+                                    </p>
+                                    <button
+                                        onClick={() => togglePasswordVisibility(item.id)}
+                                        className="text-gray-400 hover:text-gray-600 transition ml-2"
+                                        title={visiblePasswords.has(item.id) ? "Masquer" : "Afficher"}
+                                    >
+                                        {visiblePasswords.has(item.id) ? "👁️" : "👁️‍🗨️"}
+                                    </button>
+                                </div>
 
                                 <div className="flex justify-between">
                                     <Link
