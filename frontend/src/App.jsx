@@ -12,6 +12,7 @@ import EditCredential from "./pages/EditCredential.jsx";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthCheckComplete, setIsAuthCheckComplete] = useState(false);
 
   const [credentials, setCredentials] = useState([
     { id: 1, site: "Google", login: "user@gmail.com", password: "123456" },
@@ -47,12 +48,14 @@ function App() {
     if (token && tokenExp && Number(tokenExp) > now) {
       setIsAuthenticated(true);
       fetchCredentials(token);
-      return;
+    } else {
+      localStorage.removeItem("jstoken");
+      localStorage.removeItem("jstoken_exp");
+      localStorage.removeItem("uid");
+      setIsAuthenticated(false);
     }
 
-    localStorage.removeItem("jstoken");
-    localStorage.removeItem("jstoken_exp");
-    setIsAuthenticated(false);
+    setIsAuthCheckComplete(true);
   }, []);
 
   return (
@@ -79,7 +82,7 @@ function App() {
           <Route
             path="/dashboard"
             element={
-              isAuthenticated ? (
+              !isAuthCheckComplete ? null : isAuthenticated ? (
                 <Dashboard
                   credentials={credentials}
                   setCredentials={setCredentials}
@@ -93,7 +96,7 @@ function App() {
           <Route
             path="/edit/:id"
             element={
-              isAuthenticated ? (
+              !isAuthCheckComplete ? null : isAuthenticated ? (
                 <EditCredential
                   credentials={credentials}
                   setCredentials={setCredentials}

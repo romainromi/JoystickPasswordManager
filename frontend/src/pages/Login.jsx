@@ -43,9 +43,12 @@ export default function Login({ setIsAuthenticated }) {
                 const expiresAt = Date.now() + 60 * 60 * 1000;
                 localStorage.setItem("jstoken_exp", String(expiresAt));
             }
+            if (data?.id) {
+                localStorage.setItem("uid", data.id);
+            }
             // Succès !
             setIsAuthenticated(true);
-            navigate("/dashboard");
+            navigate(`/dashboard?uid=${data.id}`);
         } catch (error) {
             setErrors({ submit: error.message || 'Erreur serveur' });
             console.error('Error:', error);
