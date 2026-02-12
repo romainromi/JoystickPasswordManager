@@ -9,14 +9,15 @@ import Logger from "./middleware/logger.middleware.js";
 
 const app = express();
 
+app.use(
+	cors({
+		origin: "http://localhost:5173",
+		credentials: true,
+	}),
+);
 app.use(helmet());
 
 app.use(express.json());
-app.use(
-	cors({
-		origin: "http://localhost:5137",
-	}),
-);
 
 app.set("trust proxy", true);
 app.use(Logger);
