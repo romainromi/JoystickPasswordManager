@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Authenticate } from "../services/auth.service";
 
 export default function Login({ setIsAuthenticated }) {
     const navigate = useNavigate();
@@ -12,7 +13,7 @@ export default function Login({ setIsAuthenticated }) {
         return regex.test(email);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const newErrors = {};
 
@@ -34,8 +35,16 @@ export default function Login({ setIsAuthenticated }) {
         }
 
         setErrors({});
-        setIsAuthenticated(true);
-        navigate("/dashboard");
+
+        try {
+            await Authenticate(email, password);
+            // Succès !
+            setIsAuthenticated(true);
+            navigate("/dashboard");
+        } catch (error) {
+            setErrors({ submit: error.message || 'Erreur serveur' });
+            console.error('Error:', error);
+        }
     };
 
     return (
@@ -48,6 +57,11 @@ export default function Login({ setIsAuthenticated }) {
                 onSubmit={handleSubmit}
                 className="bg-white rounded-2xl shadow-xl shadow-pink-100 p-8 space-y-5 border border-pink-100"
             >
+                {errors.submit && (
+                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                        {errors.submit}
+                    </div>
+                )}
                 <div>
                     <input
                         type="email"

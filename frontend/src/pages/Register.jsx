@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { inscrire } from "../services/auth.service";
 
 export default function Register() {
     const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function Register() {
         return regex.test(email);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const newErrors = {};
 
@@ -46,7 +47,15 @@ export default function Register() {
         }
 
         setErrors({});
-        navigate("/login");
+
+        try {
+            await inscrire(nom, email, password);
+            // Succès ! Redirection vers login
+            navigate('/login');
+        } catch (error) {
+            setErrors({ submit: error.message || 'Erreur serveur' });
+            console.error('Error:', error);
+        }
     };
 
     return (
@@ -56,6 +65,11 @@ export default function Register() {
             </h1>
 
             <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl shadow-pink-100 p-8 space-y-5 border border-pink-100">
+                {errors.submit && (
+                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                        {errors.submit}
+                    </div>
+                )}
                 <div>
                     <input
                         type="text"
