@@ -95,6 +95,21 @@ export default function EditCredential({ credentials, setCredentials }) {
             }
 
             // Succès !
+            const savedItem = {
+                id: data?.id ?? (id === "new" ? Date.now() : Number.parseInt(id)),
+                site,
+                login,
+                password,
+            };
+
+            if (id === "new") {
+                setCredentials([...credentials, savedItem]);
+            } else {
+                setCredentials(
+                    credentials.map((c) => (c.id === savedItem.id ? savedItem : c))
+                );
+            }
+
             navigate("/dashboard");
         } catch (error) {
             setErrors({ submit: 'Erreur serveur' });

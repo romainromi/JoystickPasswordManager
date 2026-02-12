@@ -4,7 +4,6 @@ import { inscrire } from "../services/auth.service";
 
 export default function Register() {
     const navigate = useNavigate();
-    const [nom, setNom] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -18,10 +17,6 @@ export default function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newErrors = {};
-
-        if (!nom.trim()) {
-            newErrors.nom = "Le nom ne peut pas être vide";
-        }
 
         if (!email.trim()) {
             newErrors.email = "L'email ne peut pas être vide";
@@ -49,7 +44,7 @@ export default function Register() {
         setErrors({});
 
         try {
-            await inscrire(nom, email, password);
+            await inscrire(email, password, confirmPassword);
             // Succès ! Redirection vers login
             navigate('/login');
         } catch (error) {
@@ -70,17 +65,6 @@ export default function Register() {
                         {errors.submit}
                     </div>
                 )}
-                <div>
-                    <input
-                        type="text"
-                        placeholder="Nom"
-                        value={nom}
-                        onChange={(e) => setNom(e.target.value)}
-                        className={`w-full p-3 rounded-xl border ${errors.nom ? 'border-red-400' : 'border-pink-100'} focus:outline-none focus:ring-2 focus:ring-pink-400`}
-                    />
-                    {errors.nom && <p className="text-red-500 text-sm mt-1">{errors.nom}</p>}
-                </div>
-
                 <div>
                     <input
                         type="email"
