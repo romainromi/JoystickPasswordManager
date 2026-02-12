@@ -48,6 +48,8 @@ export const validatePasswordAccess = async (req, res, next) => {
 };
 
 export const validatePasswordData = (req, res, next) => {
+	req.body.url = req.body.site;
+	req.body.username = req.body.login;
 	const schema = z.object({
 		url: z.url(),
 		username: z
