@@ -1,28 +1,56 @@
-// src/components/Navbar.jsx
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function Navbar() {
+export default function Navbar({ isAuthenticated, setIsAuthenticated }) {
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        setIsAuthenticated(false);
+        navigate("/");
+    };
+
     return (
-        <nav className="bg-pink-300 p-4 flex items-center justify-between">
+        <nav className="bg-white/70 backdrop-blur-md border-b border-pink-100 px-8 py-4 flex items-center justify-between sticky top-0 z-50">
+            <Link
+                to="/"
+                className="text-2xl font-bold text-pink-500 tracking-tight"
+            >
+                Joystick
+            </Link>
 
-            {/* Pour laisser le bouton à droite, on met un div vide à gauche */}
-            <div className="w-1/3"></div>
+            <div className="flex items-center gap-4">
+                {isAuthenticated ? (
+                    <>
+                        <Link
+                            to="/dashboard"
+                            className="text-pink-500 font-medium hover:text-pink-600 transition"
+                        >
+                            Dashboard
+                        </Link>
 
-            {/* Nom du site au centre */}
-            <div className="text-white text-xl font-bold text-center w-1/3">
-                <Link to="/" className="hover:underline">
-                    Joystick Password Manager
-                </Link>
-            </div>
+                        <button
+                            onClick={handleLogout}
+                            className="bg-pink-500 text-white px-5 py-2 rounded-xl shadow-md hover:shadow-lg hover:bg-pink-600 transition"
+                        >
+                            Déconnexion
+                        </button>
+                    </>
+                ) : (
+                    <>
+                        <Link
+                            to="/login"
+                            className="text-pink-500 font-medium hover:text-pink-600 transition"
+                        >
+                            Connexion
+                        </Link>
 
-            {/* Bouton Connexion à droite */}
-            <div className="w-1/3 flex justify-end">
-                <Link
-                    to="/login"
-                    className="bg-white text-pink-500 font-semibold py-2 px-4 rounded hover:bg-pink-100"
-                >
-                    Connexion
-                </Link>
+                        <Link
+                            to="/register"
+                            className="bg-pink-500 text-white px-5 py-2 rounded-xl shadow-md hover:shadow-lg hover:bg-pink-600 transition"
+                        >
+                            Inscription
+                        </Link>
+                    </>
+                )}
             </div>
         </nav>
     );

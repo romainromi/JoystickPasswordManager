@@ -1,62 +1,61 @@
-// src/pages/Dashboard.jsx
 import { Link } from "react-router-dom";
 
-export default function Dashboard() {
-    // Données factices pour le moment
-    const dummyData = [
-        { id: 1, site: "Google", login: "user@gmail.com", password: "••••••" },
-        { id: 2, site: "Facebook", login: "user@fb.com", password: "••••••" },
-    ];
+export default function Dashboard({ credentials, setCredentials }) {
+    const handleDelete = (id) => {
+        setCredentials(credentials.filter((c) => c.id !== id));
+    };
 
     return (
-        <div className="p-6">
-            {/* Titre */}
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-pink-500">Vos identifiants</h1>
+        <div className="max-w-6xl mx-auto">
+            <div className="flex justify-between items-center mb-12">
+                <h1 className="text-4xl font-bold text-pink-600">
+                    Vos identifiants
+                </h1>
 
-                {/* Bouton Ajouter */}
                 <Link
                     to="/edit/new"
-                    className="bg-pink-300 hover:bg-pink-400 text-white font-semibold py-2 px-4 rounded"
+                    className="bg-pink-500 text-white px-6 py-3 rounded-2xl shadow-lg hover:bg-pink-600 transition"
                 >
-                    Ajouter un identifiant
+                    + Ajouter
                 </Link>
             </div>
 
-            {/* Tableau des identifiants */}
-            <table className="min-w-full border border-gray-200 rounded">
-                <thead className="bg-pink-100">
-                    <tr>
-                        <th className="p-2 text-left">Site</th>
-                        <th className="p-2 text-left">Login</th>
-                        <th className="p-2 text-left">Mot de passe</th>
-                        <th className="p-2 text-left">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {dummyData.map(item => (
-                        <tr key={item.id} className="border-t">
-                            <td className="p-2">{item.site}</td>
-                            <td className="p-2">{item.login}</td>
-                            <td className="p-2">{item.password}</td>
-                            <td className="p-2 flex gap-2">
-                                {/* Bouton Modifier */}
-                                <Link
-                                    to={`/edit/${item.id}`}
-                                    className="bg-yellow-300 hover:bg-yellow-400 py-1 px-2 rounded"
-                                >
-                                    Modifier
-                                </Link>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {credentials.map((item) => (
+                    <div
+                        key={item.id}
+                        className="bg-white rounded-2xl shadow-lg shadow-pink-100 p-6 border border-pink-100 hover:shadow-xl transition"
+                    >
+                        <h2 className="text-xl font-semibold text-pink-600 mb-2">
+                            {item.site}
+                        </h2>
 
-                                {/* Bouton Supprimer */}
-                                <button className="bg-red-300 hover:bg-red-400 py-1 px-2 rounded">
-                                    🗑️
-                                </button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+                        <p className="text-gray-600 text-sm mb-1">
+                            {item.login}
+                        </p>
+
+                        <p className="text-gray-400 text-sm mb-6">
+                            {item.password}
+                        </p>
+
+                        <div className="flex justify-between">
+                            <Link
+                                to={`/edit/${item.id}`}
+                                className="text-pink-500 font-medium hover:underline"
+                            >
+                                Modifier
+                            </Link>
+
+                            <button
+                                onClick={() => handleDelete(item.id)}
+                                className="text-red-400 hover:text-red-500"
+                            >
+                                Supprimer
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
