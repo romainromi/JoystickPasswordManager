@@ -123,7 +123,7 @@ export default function Dashboard({ credentials, setCredentials }) {
                                 <div className="flex justify-between">
                                     <Link
                                         to={`/edit/${item.id}`}
-                                        className="text-pink-500 font-medium hover:underline"
+                                        className="text-pink-500 font-medium hover:text-pink-600"
                                     >
                                         Modifier
                                     </Link>
