@@ -11,17 +11,67 @@ export default function EditCredential({ credentials, setCredentials }) {
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
-        if (id !== "new") {
-            const item = credentials.find(
-                (d) => d.uid === Number.parseInt(id)
-            );
-
-            if (item) {
-                setSite(item.site);
-                setLogin(item.login);
-                setPassword(item.password);
-            }
+        if (id === "new") {
+            setSite("");
+            setLogin("");
+            setPassword("");
+            return;
         }
+
+        const item = credentials.find((d) => String(d.uid) === String(id));
+        if (item) {
+            setSite(item.site);
+            setLogin(item.login);
+            setPassword(item.password);
+        }
+
+        let isActive = true;
+        const fetchCredential = async () => {
+            try {
+                const token = localStorage.getItem("jstoken");
+                if (!token) {
+                    if (isActive) {
+                        setErrors({ submit: "Token manquant" });
+                    }
+                    return;
+                }
+
+                const response = await fetch(`http://localhost:5000/api/passwords/${id}`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    if (isActive) {
+                        setErrors({ submit: data.message || "Erreur lors du chargement" });
+                    }
+                    return;
+                }
+
+                const payload = data?.data || {};
+                if (isActive) {
+                    setSite(payload.site || "");
+                    setLogin(payload.login || "");
+                    setPassword(payload.password || "");
+                }
+            } catch (error) {
+                if (isActive) {
+                    setErrors({ submit: "Erreur serveur" });
+                }
+                console.error("Error:", error);
+            }
+        };
+
+        fetchCredential();
+
+        return () => {
+            isActive = false;
+        };
     }, [id, credentials]);
 
     const validateEmail = (email) => {
