@@ -15,8 +15,8 @@ function App() {
   const [isAuthCheckComplete, setIsAuthCheckComplete] = useState(false);
 
   const [credentials, setCredentials] = useState([
-    { id: 1, site: "Google", login: "user@gmail.com", password: "123456" },
-    { id: 2, site: "Facebook", login: "user@fb.com", password: "abcdef" },
+    { uid: 1, site: "Google", login: "user@gmail.com", password: "123456" },
+    { uid: 2, site: "Facebook", login: "user@fb.com", password: "abcdef" },
   ]);
 
   const fetchCredentials = async (token) => {
