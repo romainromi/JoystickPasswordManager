@@ -1,5 +1,5 @@
 // backend/controllers/password.controller.js
-import { getAll, getByID, createPass, updatePass, deletePass } from "../models/password.model.js";
+import { getAll, getByUID, createPass, updatePass, deletePass } from "../models/password.model.js";
 import { encrypt, decrypt } from "../services/crypto.service.js";
 
 export async function getAllPasswords(req, res) {
@@ -17,7 +17,7 @@ export async function getAllPasswords(req, res) {
 }
 
 export async function getPasswordByID(req, res) {
-	let passwordLine = await getByID(req.params.id, req.user.id);
+	let passwordLine = await getByUID(req.params.uid, req.user.id);
 	const password = decrypt({
 		iv: passwordLine.iv,
 		value: passwordLine.value,
@@ -31,7 +31,7 @@ export async function getPasswordByID(req, res) {
 export async function updatePassword(req, res) {
 	try {
 		const hash = encrypt(req.body.password);
-		await updatePass(req.body.url, req.body.username, hash, req.params.id, req.user.id);
+		await updatePass(req.body.url, req.body.username, hash, req.params.uid, req.user.id);
 		return res.status(200).json({ message: "Mot de passe modifié" });
 	} catch (error) {
 		console.log(error.message);
@@ -52,7 +52,7 @@ export async function addPassword(req, res) {
 
 export async function deletePassword(req, res) {
 	try {
-		await deletePass(req.params.id, req.user.id);
+		await deletePass(req.params.uid, req.user.id);
 		return res.status(204).send();
 	} catch (error) {
 		console.log(error.message);

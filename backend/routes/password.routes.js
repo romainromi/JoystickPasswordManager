@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { validateId, validatePasswordData, validatePasswordAccess } from "../middleware/validation.middleware.js";
+import { validateUId, validatePasswordData, validatePasswordAccess } from "../middleware/validation.middleware.js";
 
 export const passwordRoutes = Router();
 
@@ -10,8 +10,8 @@ import { getAllPasswords, getPasswordByID, addPassword, updatePassword, deletePa
 
 passwordRoutes.get("/", getAllPasswords);
 passwordRoutes.post("/", validatePasswordData, addPassword);
-passwordRoutes.get("/:id", validateId, validatePasswordAccess, getPasswordByID);
-passwordRoutes.patch("/:id", validateId, validatePasswordData, validatePasswordAccess, updatePassword);
-passwordRoutes.delete("/:id", validateId, validatePasswordAccess, deletePassword);
+passwordRoutes.get("/:uid", validateUId, validatePasswordAccess, getPasswordByID);
+passwordRoutes.patch("/:uid", validateUId, validatePasswordData, validatePasswordAccess, updatePassword);
+passwordRoutes.delete("/:uid", validateUId, validatePasswordAccess, deletePassword);
 
 // module.exports = passwordRoutes;
