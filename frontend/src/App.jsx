@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
 
@@ -11,52 +11,29 @@ import Dashboard from "./pages/Dashboard.jsx";
 import EditCredential from "./pages/EditCredential.jsx";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isAuthCheckComplete, setIsAuthCheckComplete] = useState(false);
-
-  const [credentials, setCredentials] = useState([
-    { uid: 1, site: "Google", login: "user@gmail.com", password: "123456" },
-    { uid: 2, site: "Facebook", login: "user@fb.com", password: "abcdef" },
-  ]);
-
-  const fetchCredentials = async (token) => {
-    try {
-      const response = await fetch('http://localhost:5000/api/passwords', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        const passwords = Array.isArray(data.passwords) ? data.passwords : [];
-        setCredentials(passwords);
-      }
-    } catch (err) {
-      console.error('Error fetching credentials:', err);
-    }
-  };
-
-  useEffect(() => {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
     const token = localStorage.getItem("jstoken");
     const tokenExp = localStorage.getItem("jstoken_exp");
     const now = Date.now();
+    const isValid = Boolean(token && tokenExp && Number(tokenExp) > now);
 
-    if (token && tokenExp && Number(tokenExp) > now) {
-      setIsAuthenticated(true);
-      fetchCredentials(token);
-    } else {
+    if (!isValid) {
       localStorage.removeItem("jstoken");
       localStorage.removeItem("jstoken_exp");
       localStorage.removeItem("uid");
-      setIsAuthenticated(false);
     }
 
-    setIsAuthCheckComplete(true);
-  }, []);
+    return isValid;
+  });
+  const [isAuthCheckComplete] = useState(true);
+
+  const [credentials, setCredentials] = useState([]);
+
+  const renderProtected = (element) => {
+    if (!isAuthCheckComplete) return null;
+    if (!isAuthenticated) return <Navigate to="/login" />;
+    return element;
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -81,30 +58,22 @@ function App() {
 
           <Route
             path="/dashboard"
-            element={
-              !isAuthCheckComplete ? null : isAuthenticated ? (
-                <Dashboard
-                  credentials={credentials}
-                  setCredentials={setCredentials}
-                />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
+            element={renderProtected(
+              <Dashboard
+                credentials={credentials}
+                setCredentials={setCredentials}
+              />
+            )}
           />
 
           <Route
             path="/edit/:id"
-            element={
-              !isAuthCheckComplete ? null : isAuthenticated ? (
-                <EditCredential
-                  credentials={credentials}
-                  setCredentials={setCredentials}
-                />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
+            element={renderProtected(
+              <EditCredential
+                credentials={credentials}
+                setCredentials={setCredentials}
+              />
+            )}
           />
         </Routes>
       </div>
