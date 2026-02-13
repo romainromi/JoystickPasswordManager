@@ -39,7 +39,7 @@ export const validateLogin = (req, res, next) => {
 };
 
 export const validatePasswordAccess = async (req, res, next) => {
-	if (await passwordBelongstoUser(req.params.id, req.user.id)) next();
+	if (await passwordBelongstoUser(req.params.uid, req.user.id)) next();
 	else {
 		return res.status(401).json({
 			message: "Accès refusé",
@@ -78,11 +78,9 @@ export const validatePasswordData = (req, res, next) => {
 	}
 };
 
-export const validateId = (req, res, next) => {
-	req.params = { ...req.params, id: Number.isInteger(Number(req.params.id)) ? Number(req.params.id) : 0 };
-
+export const validateUId = (req, res, next) => {
 	const schema = z.object({
-		id: z.number(),
+		uid: z.string().regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i),
 	});
 
 	try {

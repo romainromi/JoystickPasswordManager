@@ -6,8 +6,9 @@ export async function getAll(userId) {
 	return passwords;
 }
 
-export async function getByID(id, userId) {
-	const [passwords] = await db.query("SELECT url as site, identifiant as login, iv, value, tag, uid FROM mots_de_passes WHERE id=? AND utilisateur_id=?", [id, userId]);
+export async function getByUID(uid, userId) {
+	const [passwords] = await db.query("SELECT url as site, identifiant as login, iv, value, tag, uid FROM mots_de_passes WHERE uid=? AND utilisateur_id=?", [uid, userId]);
+
 	return passwords[0];
 }
 
@@ -25,25 +26,25 @@ export async function createPass(url, identifiant, password, userId) {
 	return passwords;
 }
 
-export async function updatePass(url, username, password, id, userId) {
+export async function updatePass(url, username, password, uid, userId) {
 	const [passwords] = await db.query("UPDATE mots_de_passes SET identifiant=?, iv=?, value=?, tag=?, url=? WHERE uid=? AND utilisateur_id=?", [
 		username,
 		password.iv,
 		password.value,
 		password.tag,
 		url,
-		id,
+		uid,
 		userId,
 	]);
 	return passwords;
 }
 
-export async function deletePass(id, userId) {
-	const [result] = await db.query("DELETE FROM mots_de_passes WHERE uid=? AND utilisateur_id=?", [id, userId]);
+export async function deletePass(uid, userId) {
+	const [result] = await db.query("DELETE FROM mots_de_passes WHERE uid=? AND utilisateur_id=?", [uid, userId]);
 	return result;
 }
 
-export async function passwordBelongstoUser(passId, userId) {
-	const [result] = await db.query("SELECT * FROM mots_de_passes WHERE uid=? AND utilisateur_id=?", [passId, userId]);
+export async function passwordBelongstoUser(passUId, userId) {
+	const [result] = await db.query("SELECT * FROM mots_de_passes WHERE uid=? AND utilisateur_id=?", [passUId, userId]);
 	return result.length > 0;
 }
