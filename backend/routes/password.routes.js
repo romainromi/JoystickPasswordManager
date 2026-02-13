@@ -11,7 +11,7 @@ import { getAllPasswords, getPasswordByID, addPassword, updatePassword, deletePa
 passwordRoutes.get("/", getAllPasswords);
 passwordRoutes.post("/", validatePasswordData, addPassword);
 passwordRoutes.get("/:uid", validateUId, validatePasswordAccess, getPasswordByID);
-passwordRoutes.patch("/:uid", validateUId, validatePasswordData, validatePasswordAccess, updatePassword);
+passwordRoutes.put("/:uid", validateUId, validatePasswordData, validatePasswordAccess, updatePassword);
 passwordRoutes.delete("/:uid", validateUId, validatePasswordAccess, deletePassword);
 
 // module.exports = passwordRoutes;
