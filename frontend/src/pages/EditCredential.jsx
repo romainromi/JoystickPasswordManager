@@ -8,6 +8,7 @@ export default function EditCredential({ credentials, setCredentials }) {
     const [site, setSite] = useState("");
     const [login, setLogin] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
@@ -214,13 +215,24 @@ export default function EditCredential({ credentials, setCredentials }) {
                 </div>
 
                 <div>
-                    <input
-                        type="password"
-                        placeholder="Mot de passe"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className={`w-full p-3 rounded-xl border ${errors.password ? 'border-red-400' : 'border-pink-100'} focus:outline-none focus:ring-2 focus:ring-pink-400`}
-                    />
+                    <div className="relative">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Mot de passe"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            className={`w-full p-3 pr-12 rounded-xl border ${errors.password ? 'border-red-400' : 'border-pink-100'} focus:outline-none focus:ring-2 focus:ring-pink-400`}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword((prev) => !prev)}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition"
+                            aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+                            title={showPassword ? "Masquer" : "Afficher"}
+                        >
+                            {showPassword ? "👁️" : "👁️‍🗨️"}
+                        </button>
+                    </div>
                     {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
                 </div>
 
